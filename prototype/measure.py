@@ -35,7 +35,7 @@ def region_labeling(image, neighbors=8, background=0):
 
     """
 
-    _image = _check_image(image)
+    _image = utils._check_image(image)
 
     labeled = measure.label(
         _image, neighbors=neighbors, background=background
@@ -115,24 +115,3 @@ def _select_regions(image, wanted_blobs, foreground=255, background=0):
         filtered[image == wanted_blob] = foreground
 
     return filtered
-
-
-if __name__ == '__main__':
-
-    import matplotlib.pyplot as plt
-    from skimage.io import imread
-
-    img = imread('./../../nih_material/images/train/refr_train.tif')
-
-    gray = np.mean(img, axis=2)
-
-    binary = np.zeros_like(gray.copy(), dtype=np.uint8)
-    binary[gray > 10.6875] = 255
-
-    blob_props = {
-    }
-
-    filtered = region_selection(binary, blob_props)
-
-    plt.imshow(filtered)
-    plt.show()
