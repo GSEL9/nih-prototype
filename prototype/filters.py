@@ -35,7 +35,7 @@ def threshold(image, algorithm='otsu', nbins=256):
             thresholding algorithms. Defaults to 256 bins.
 
     Returns:
-        thresh (float):
+        thresh (float): Thresholding value.
 
     """
 
@@ -57,7 +57,7 @@ def threshold(image, algorithm='otsu', nbins=256):
 
 
 def binarize(image, thresh, foreground=255):
-    """
+    """Creates a binary image from an original image and a thresholding value.
 
     Args:
         image (array-like): Input image. Is converted to grayscale if RGB.
@@ -65,9 +65,10 @@ def binarize(image, thresh, foreground=255):
         thresh (int): Optional threshold value to use instead of a thresholding
             algorithm. Defaults to None.
 
-        foreground ():
+        foreground (int, float): The image foreground intensity value.
 
     Returns:
+        binary (array-like): A binarized version of the input image.
 
     """
 
