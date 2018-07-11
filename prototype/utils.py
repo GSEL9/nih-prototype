@@ -22,7 +22,7 @@ CONSTRAINTS = {
     'min_area': -np.float('inf'),
     'max_area': np.float('inf'),
     'min_solidity': -np.float('inf'),
-    'min_solidity': np.float('inf'),
+    'max_solidity': np.float('inf'),
     'min_eccent': -np.float('inf'),
     'max_eccent': np.float('inf')
 }

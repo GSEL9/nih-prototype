@@ -76,7 +76,7 @@ def region_selection(image, constraints):
     return filtered
 
 
-def _is_wanted_blob(blob, constraints):
+def _is_wanted_blob(blob, limits):
     # Evaluates a set of blob characteristics in order to determine the the
     # blob is actually a cluster, or noise.
 
@@ -130,7 +130,6 @@ if __name__ == '__main__':
     binary[gray > 10.6875] = 255
 
     blob_props = {
-        'min_area': 1000,
     }
 
     filtered = region_selection(binary, blob_props)
