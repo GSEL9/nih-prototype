@@ -56,7 +56,6 @@ def threshold(image, algorithm='otsu', nbins=256):
     return thresh
 
 
-
 def binarize(image, thresh, foreground=255):
     """
 
