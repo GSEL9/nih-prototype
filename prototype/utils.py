@@ -17,6 +17,17 @@ __status__ = 'Operational'
 import numpy as np
 
 
+# Evaluated constraints on blob characteristics.
+CONSTRAINTS = {
+    'min_area': -np.float('inf'),
+    'max_area': np.float('inf'),
+    'min_solidity': -np.float('inf'),
+    'min_solidity': np.float('inf'),
+    'min_eccent': -np.float('inf'),
+    'max_eccent': np.float('inf')
+}
+
+
 def _check_image(image):
     # Returns a copy on the image. If not the image is grayscale the average
     # across the channels is returned.
@@ -32,6 +43,17 @@ def _check_image(image):
 
     return _image
 
+
+def _check_blob_constraints(constraints):
+
+    for key in constraints.keys():
+        if not key in CONSTRAINTS.keys():
+            raise ValueError('Invalid key: `{}` not in constraint keys:\n {}'
+                             ''.format(key, list(CONSTRAINTS.keys())))
+
+    CONSTRAINTS.update(constraints)
+
+    return CONSTRAINTS
 
 def _check_parameter(parameter, dtype, value):
     # Parameter value type checking.
