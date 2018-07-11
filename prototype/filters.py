@@ -35,6 +35,7 @@ def threshold(image, algorithm='otsu', nbins=256):
             thresholding algorithms. Defaults to 256 bins.
 
     Returns:
+        thresh (float):
 
     """
 
