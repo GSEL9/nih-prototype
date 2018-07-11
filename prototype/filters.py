@@ -22,9 +22,8 @@ from skimage import filters
 from utils import _check_image
 
 
-def threshold(image, algorithm='otsu', nbins=256, thresh=None):
-    """Creates a binary image from input image by thresholding the image
-    according to specified algorithm.
+def threshold(image, algorithm='otsu', nbins=256):
+    """Computes thresholding value according to specified algorithm.
 
     Args:
         image (array-like): Input image. Is converted to grayscale if RGB.
@@ -35,12 +34,40 @@ def threshold(image, algorithm='otsu', nbins=256, thresh=None):
         nbins (int): The number of bins used to calculate histogram as input to
             thresholding algorithms. Defaults to 256 bins.
 
+    Returns:
+
+    """
+
+    _image = _check_image(image)
+
+    if algorithm == 'otsu':
+        thresh = filters.threshold_otsu(_image, nbins=nbins)
+
+    elif algorithm == 'li':
+        thresh = filters.threshold_li(_image)
+
+    elif algorithm == 'yen':
+        thresh = filters.threshold_yen(_image, nbins=nbins)
+
+    else:
+        raise ValueError('Algorithm {} not available'.format(algorithm))
+
+    return thresh
+
+
+
+def binarize(image, thresh, foreground=255):
+    """
+
+    Args:
+        image (array-like): Input image. Is converted to grayscale if RGB.
+
         thresh (int): Optional threshold value to use instead of a thresholding
             algorithm. Defaults to None.
 
+        foreground ():
+
     Returns:
-        binary (array-like): The binarized versinon of the input image
-            according to selected thresholding algorithm.
 
     """
 
@@ -48,24 +75,6 @@ def threshold(image, algorithm='otsu', nbins=256, thresh=None):
 
     binary = np.zeros_like(_image, dtype=np.uint8)
 
-    if thresh is None:
-
-        if algorithm == 'otsu':
-            thresh = filters.threshold_otsu(_image, nbins=nbins)
-
-        elif algorithm == 'li':
-            thresh = filters.threshold_li(_image)
-
-        elif algorithm == 'yen':
-            thresh = filters.threshold_yen(_image, nbins=nbins)
-
-        else:
-            raise ValueError('Algorithm {} not available'.format(algorithm))
-
-        binary[_image > thresh] = 255
-
-    else:
-
-        binary[_image > thresh] = 255
+    binary[_image > thresh] = foreground
 
     return binary
