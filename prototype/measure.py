@@ -26,12 +26,12 @@ def region_labeling(image, neighbors=8, background=0):
     Args:
         image (array-like): Input image. Is converted to grayscale if RGB.
 
-        neighbors ():
+        neighbors (int, {4, 8}): Specifies connectivity.
 
-        background ():
+        background (int, float): The image background intensity value.
 
     Returns:
-        labeled (array-like):
+        labeled (array-like): The labeled version of the input image.
 
     """
 
@@ -51,10 +51,11 @@ def region_selection(image, constraints):
     Args:
         image (array-like): Input image. Is converted to grayscale if RGB.
 
-        constraints (dict):
+        constraints (dict): Allows filtering of blobs based on geometrical
+            properties.
 
     Returns:
-        filtered (array-like):
+        filtered (array-like): The region filtered version of the input image.
 
     """
 
