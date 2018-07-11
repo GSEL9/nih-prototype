@@ -67,6 +67,14 @@ def region_selection(image, nbins=None, min_area=None, max_area=None):
 
     labeled = measure.label(_image, neighbors=8, background=0)
 
+    # TODO: Change function to something like:
+    # num_regions = labeled.max()
+    # wanted_blobs = [True] * num_regions
+    # regions = regionprops(labeled)
+    # for num, blob in enumerate(regions):
+    #     wanted_blobs[num] = _is_wanted_blob(blob)
+    # filtered = _select_regions(labeled, wanted_blobs)
+
     min_area = -np.float('inf') if min_area is None else min_area
     max_area = np.float('inf') if max_area is None else max_area
 
@@ -81,9 +89,40 @@ def region_selection(image, nbins=None, min_area=None, max_area=None):
         if not min_area <= areas[num] <= max_area:
             wanted_blobs[num] = False
 
+    # TODO:
     filtered = _select_regions(labeled, wanted_blobs)
 
     return filtered
+
+
+# TODO: Compute skimage.regionprops for labeled image in region_selection().
+# for each blob, check if blob is wanted based on blob props.
+def _is_wanted_blob(blob, min_area, max_area, min_solidity):
+    # Evaluates a set of blob characteristics in order to determine the the
+    # blob is actually a cluster, or noise.
+
+    wanted = True
+
+    if not min_area <= blob.area <= max_area:
+        wanted = False
+
+    if not min_solidity <= blobl.solidity <= max_solidity:
+        wanted = False
+
+    """Solidity is area fraction of the region as compared to its convex hull.
+    The convex hull is what you'd get if you wrapped a rubber band around your
+    region. So solidity is what fraction of the actual area your region is. For
+    any convex object it's 1. An asterisk might have a solidity of around 0.5,
+    while a thin "L" shape (or T or E, etc.)would have a very low solidity.
+    The more bays, nooks, and crannies it has, the lower the solidity.
+    """
+
+    if not min_eccentricity <= blobl.eccentricity <= max_eccentricity:
+        wanted = False
+
+    # Straight line has eccentricity = inf. A pefect circle has eccentricity = 0.
+
+    return wanted
 
 
 def _select_regions(image, wanted_blobs, foreground=255, background=0):
@@ -92,6 +131,7 @@ def _select_regions(image, wanted_blobs, foreground=255, background=0):
     filtered = np.zeros_like(image, dtype=np.uint8)
 
     num_blobs = len(wanted_blobs)
+
     unwanted = np.arange(1, num_blobs + 1)[np.logical_not(wanted_blobs)]
     wanted = np.arange(1, num_blobs + 1)[wanted_blobs]
 
